@@ -1,7 +1,10 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Net.Sockets;
 
-public class ClientSocket : IDisposable
+namespace ConsoleApp1
+{
+    public class ClientSocket : IDisposable
     {
         private bool disposed;
 
@@ -74,4 +77,4 @@ public class ClientSocket : IDisposable
             GC.SuppressFinalize(this);
         }
     }
-
+}

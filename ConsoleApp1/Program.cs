@@ -2,37 +2,21 @@
 
 namespace ConsoleApp1
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static void Main()
         {
-            string host = "some-domain.com";
-            int port = 80;
-
-            using (ClientSocket clientSocket = new ClientSocket(host, port))
+            ILogger[] loggers = new ILogger[]
             {
-                // request:
+                new ConsoleLogger(),
+                new FileLogger("filelogger.txt"),
+                new SocketLogger("google.com", 80)
+            };
 
-                string requestText = "Message to sent ...";
-                byte[] requestBytes = Encoding.UTF8.GetBytes(requestText);
-
-                clientSocket.Send(requestBytes);
-
-                // response:
-
-                byte[] responseBuffer = new byte[1024];
-                int responseSize = clientSocket.Receive(responseBuffer);
-
-                string responseText = Encoding.UTF8.GetString(responseBuffer, 0, responseSize); // received message
-
-                // ...
-
-                // cleaning:
-
-                clientSocket.Close();
-            }
+            using ILogger logger = new CommonLogger(loggers);
+            logger.Log("Example message 1 ...");
+            logger.Log("Example message 2 ...");
+            logger.Log("Example message 3 ...", "value 1", "value 2", "value 3");
         }
     }
 }
-
-
